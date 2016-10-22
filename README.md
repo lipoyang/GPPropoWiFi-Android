@@ -6,7 +6,7 @@ GPduino WiFiを使ったWiFiラジコンのためのプロポアプリです。�
 GPduino WiFiは、ESP8266搭載のWiFiラジコン制御ボードです。  
 <!--GPduino WiFiに関する詳細は、[GPduino特設ページ](http://lipoyang.net/gpduino)をごらんください。-->
 
-![概念図](image/BLE_overview.png)
+![概念図](image/Overview.png)
 
 ラジコンは、GPduinoとRCサーボやDCモータを組み合わせて作ります。  
 下図はミニ四駆を改造して作ったラジコンです。
