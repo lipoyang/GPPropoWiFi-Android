@@ -62,6 +62,7 @@ public class SettingActivity extends AppCompatActivity
     private Switch switchRev0, switchRev1, switchRev2;
     private NumericUpDownView viewTrim0, viewTrim1, viewTrim2;
     private NumericUpDownView viewGain0, viewGain1, viewGain2;
+    private Spinner spinner4WS, spinnerVehicle;
 
     final Handler handler = new Handler();
 
@@ -95,7 +96,8 @@ public class SettingActivity extends AppCompatActivity
         viewGain2 = (NumericUpDownView)findViewById(R.id.viewGain2);
         Button buttonSave     = (Button)findViewById(R.id.buttonSave);
         Button buttonReload   = (Button)findViewById(R.id.buttonReload);
-        Spinner spinner4WS    = (Spinner)findViewById(R.id.spinner4WS);
+        spinner4WS    = (Spinner)findViewById(R.id.spinner4WS);
+        spinnerVehicle= (Spinner)findViewById(R.id.spinnerVehicle);
         textVbat  = (TextView)findViewById(R.id.textVbat);
 
         switchRev0.setOnCheckedChangeListener(this);
@@ -114,7 +116,7 @@ public class SettingActivity extends AppCompatActivity
         viewTrim1.setMaxMin(127, -127);
         viewTrim2.setMaxMin(127, -127);
         viewGain0.setMaxMin(255, 0);
-        viewGain1.setMaxMin(255,0);
+        viewGain1.setMaxMin(255, 0);
         viewGain2.setMaxMin(255, 0);
         viewTrim0.setFormat("%1$+4d");
         viewTrim1.setFormat("%1$+4d");
@@ -123,17 +125,14 @@ public class SettingActivity extends AppCompatActivity
         viewGain1.setFormat("%1$4d");
         viewGain2.setFormat("%1$4d");
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item);
-
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        adapter.add("FRONT");
-        adapter.add("REAR");
-        adapter.add("NORMAL");
-        adapter.add("REVERSE");
+        ArrayAdapter<String> adapter4ws = new ArrayAdapter<String>(this, R.layout.spinner_item);
+        adapter4ws.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        adapter4ws.add("FRONT");
+        adapter4ws.add("REAR");
+        adapter4ws.add("NORMAL");
+        adapter4ws.add("REVERSE");
         spinner4WS = (Spinner) findViewById(R.id.spinner4WS);
-        spinner4WS.setAdapter(adapter);
+        spinner4WS.setAdapter(adapter4ws);
         spinner4WS.setOnItemSelectedListener(this);
         switch(mode4ws)
         {
@@ -150,6 +149,15 @@ public class SettingActivity extends AppCompatActivity
                 spinner4WS.setSelection(3);
                 break;
         }
+
+        ArrayAdapter<String> adapterVehicle = new ArrayAdapter<String>(this, R.layout.spinner_item);
+        adapterVehicle.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        adapterVehicle.add("CAR");
+        adapterVehicle.add("TANK");
+        spinnerVehicle = (Spinner) findViewById(R.id.spinnerVehicle);
+        spinnerVehicle.setAdapter(adapterVehicle);
+        spinnerVehicle.setOnItemSelectedListener(this);
+        spinnerVehicle.setSelection(0);
 
         // WiFi singleton
         mWiFiComm = WiFiComm.getInstance();
@@ -174,6 +182,7 @@ public class SettingActivity extends AppCompatActivity
         btState = mWiFiComm.isConnected() ? WiFiStatus.CONNECTED : WiFiStatus.DISCONNECTED;
 
         sendCommand("#AL$");
+        sendCommand("#VL$");
     }
     @Override
     public synchronized void onPause() {
@@ -299,28 +308,48 @@ public class SettingActivity extends AppCompatActivity
     {
         Spinner spinner = (Spinner) parent;
         int index = spinner.getSelectedItemPosition();
-        switch(index){
-            // [FRONT]
-            case 0:
-                mode4ws = MODE_FRONT;
+        String command;
+        
+        switch (spinner.getId()) {
+            case R.id.spinner4WS:
+                switch(index){
+                    // [FRONT]
+                    case 0:
+                        mode4ws = MODE_FRONT;
+                        break;
+                    // [REAR]
+                    case 1:
+                        mode4ws = MODE_REAR;
+                        break;
+                    // [NORMAL]
+                    case 2:
+                        mode4ws = MODE_COMMON;
+                        break;
+                    // [REVERSE]
+                    case 3:
+                        mode4ws = MODE_REVERSE;
+                        break;
+                }
+                SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = data.edit();
+                editor.putInt("mode4ws", mode4ws);
+                editor.apply();
                 break;
-            // [REAR]
-            case 1:
-                mode4ws = MODE_REAR;
-                break;
-            // [NORMAL]
-            case 2:
-                mode4ws = MODE_COMMON;
-                break;
-            // [REVERSE]
-            case 3:
-                mode4ws = MODE_REVERSE;
+            case R.id.spinnerVehicle:
+                switch(index){
+                    // [CAR]
+                    case 0:
+                        command = "#VC$";
+                        sendCommand(command);
+                        break;
+                    // [TANK]
+                    case 1:
+                        command = "#VT$";
+                        sendCommand(command);
+                        break;
+                }
                 break;
         }
-        SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = data.edit();
-        editor.putInt("mode4ws", mode4ws);
-        editor.apply();
     }
     public void onNothingSelected(AdapterView<?> arg0) {
     }
@@ -372,10 +401,31 @@ public class SettingActivity extends AppCompatActivity
                     }
                 }
                 break;
+            // read vehicle mode
+            case 'V':
+                if (data[1] == 'C')
+                {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            spinnerVehicle.setSelection(0);
+                        }
+                    });
+                }
+                if (data[1] == 'T')
+                {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            spinnerVehicle.setSelection(1);
+                        }
+                    });
+                }
+                break;
             // battery voltage
             case 'B':
                 int adc = Integer.parseInt(strData.substring(1, 1+3), 16);
-                final double voltage = adc * 2 * 3.3 / 1024;
+                final double voltage = adc * 11 * 1.0 / 1024;
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

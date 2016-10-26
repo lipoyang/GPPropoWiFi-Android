@@ -152,44 +152,17 @@
             android:layout_height="wrap_content"
             android:text="SAVE"
             android:id="@+id/buttonSave"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
         <Button
             android:layout_width="128dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:text="RELOAD"
             android:id="@+id/buttonReload"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/buttonSave" />
 
-    <RelativeLayout
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="128dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="4WS MODE"
-            android:id="@+id/text4WS"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner4WS"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/text4WS" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="BATTERY"
-            android:id="@+id/textBATTERY"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/textVbat" />
         <TextView
             android:layout_width="96dp"
             android:layout_height="wrap_content"
@@ -197,9 +170,52 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="----V"
             android:id="@+id/textVbat"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="BATTERY"
+            android:id="@+id/textBATTERY"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/textVbat" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="MODE"
+            android:id="@+id/textVehicle"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+        <Spinner
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerVehicle"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/textVehicle" />
+        <TextView
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="4WS MODE"
+            android:id="@+id/text4WS"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/spinnerVehicle" />
+        <Spinner
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner4WS"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/text4WS" />
     </RelativeLayout>
 
 </LinearLayout>
