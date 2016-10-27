@@ -4,7 +4,7 @@ GP Propo WiFi (Android版)
 ## 概要
 GPduino WiFiを使ったWiFiラジコンのためのプロポアプリです。（Android版）  
 GPduino WiFiは、ESP8266搭載のWiFiラジコン制御ボードです。  
-<!--GPduino WiFiに関する詳細は、[GPduino特設ページ](http://lipoyang.net/gpduino)をごらんください。-->
+GPduino WiFiに関する詳細は、[GPduinoサポートページ](http://lipoyang.net/gpduino)をごらんください。
 
 ![概念図](image/Overview.png)
 
@@ -48,10 +48,10 @@ GPduino WiFiは、ESP8266搭載のWiFiラジコン制御ボードです。
 
 ## 動作環境
 ### システム要件
-* Android端末: Android 4.3 (API Level 18)以上
+* Android端末: Android 4.0 (API Level 14)以上
 * 開発環境: Android Studio
 * GPduino WiFi
-* DCモータとRCサーボを有するラジコンカー <!--または DCモータ2個を有するラジコン戦車-->
+* DCモータとRCサーボを有するラジコンカー または DCモータ2個を有するラジコン戦車
 
 ### 確認済み環境
 
