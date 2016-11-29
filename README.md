@@ -49,7 +49,7 @@ GPduino WiFiに関する詳細は、[GPduinoサポートページ](http://lipoya
 
 ## 動作環境
 ### システム要件
-* Android端末: Android 4.0 (API Level 14)以上
+* Android端末: Android 4.2 (API Level 17)以上
 * 開発環境: Android Studio
 * GPduino WiFi
 * DCモータとRCサーボを有するラジコンカー または DCモータ2個を有するラジコン戦車
